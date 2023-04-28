@@ -1,0 +1,70 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+}
+
+:root{
+    --color-one: rgb(0,0,0); 
+    --color-two: rgb(100,100,100);
+    --color-three: rgb(180,180,180);
+    --color-four: rgb(240,240,240);
+    --border-one: dashed 2px white;
+}
+
+@font-face {
+    font-family: Mono-Regular;
+    src: url(./fonts/MonoRegular-jEmAR.ttf);
+    font-family: Mono-Light;
+    src: url(./fonts/MonoLight-VG7yz.ttf);
+    font-family: Mono-Bold;
+    src: url(./fonts/MonoBold-z8jG0.ttf);
+  }
+
+body{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 20% 500px auto;
+    width: 100vw;
+    height: 100vh;
+    background-color: #fafafc;
+}
+
+#header{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    font-family: Mono-Bold;
+}
+
+#generate{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#prompt{
+    display: inline;
+    margin-left: 180px;
+    margin-top:10px;
+    width: 300px;
+}
+#button{
+    display:inline;
+}
+.picture{
+    display: inline;
+    object-fit: cover;
+    height: 350px;
+    width: 350px;
+    margin: auto;
+}
+.picture-box{
+    display: flex;
+    justify-content: center;
+    height: 375px;
+    width: 375px;
+    background-color: black;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    
+}
