@@ -43,7 +43,7 @@ function Press(){
             let directions = document.getElementById("directions");
             directions.style.setProperty("top", "75%");
         }
-
+        CreateCanvas();
         if (count <7){
             Print();
         }
@@ -72,7 +72,7 @@ function Press(){
         button.style.cursor = 'pointer';
         button.disabled=false;
 
-    }, 200);
+    }, 500);
 
     count ++;
     //console.log(count);
@@ -421,7 +421,7 @@ function CreateCanvas(){
                 ctx.fillStyle = 'rgba('+ (Math.random()*255)+','+ (Math.random()*255)+','+ (Math.random()*255)+',.5)';
             }
             else if (rdm > 2){
-                ctx.fillStyle = 'rgba('+ (Math.random()*255)+','+ (Math.random()*255)+','+ (Math.random()*255)+',.5)';
+                ctx.fillStyle = 'rgba(0,0,0,.5)';
             }
             else if (rdm > 1.5){
                 ctx.fillStyle = 'rgba(0,0,0,.5)';
