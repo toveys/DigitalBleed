@@ -43,7 +43,6 @@ function Press(){
             let directions = document.getElementById("directions");
             directions.style.setProperty("top", "75%");
         }
-        CreateCanvas();
         if (count <7){
             Print();
         }
