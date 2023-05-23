@@ -59,7 +59,7 @@ function Press(){
         }
         if (count > 7){
             let rdm = (Math.random() * 100);
-            if (rdm >= 80){
+            if (rdm >= 60){
                 CreateCanvas();
             }
             else{
@@ -72,7 +72,6 @@ function Press(){
         button.disabled=false;
 
     }, 500);
-
     count ++;
     //console.log(count);
 }
