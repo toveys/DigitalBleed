@@ -39,32 +39,43 @@ function Press(){
         if (count == 1){
             document.documentElement.style.setProperty("--col-04", "rgb(0,0,0)");
             let prompt = document.getElementById("prompt-container");
-            prompt.style.setProperty("top", "85%");
-            console.log(prompt.style.top)
+            prompt.style.setProperty("top", "80%");
+            let directions = document.getElementById("directions");
+            directions.style.setProperty("top", "75%");
         }
 
-        Print();
+        if (count <7){
+            Print();
+        }
 
-        if (count > 3){
+        if (count > 2){
             Color("--col-01");
             Color("--col-02");
             Color("--col-03");
             Color("--col-04");
             Color("--col-05");
         }
-
+        if(count > 5){
+            Pixel();
+        }
         if (count > 7){
-            Alter("picture-box")
-            CreateCanvas();
+            let rdm = (Math.random() * 100);
+            if (rdm >= 80){
+                CreateCanvas();
+            }
+            else{
+                Alter("picture-box");
+                Print();
+            }
         }
         document.body.style.cursor = "default";
         button.style.cursor = 'pointer';
         button.disabled=false;
 
-    }, 500);
+    }, 200);
 
     count ++;
-    console.log(count);
+    //console.log(count);
 }
 
 
@@ -107,6 +118,9 @@ function Print(){
 
     //If I press the button then run this code
     if (count >= 5){
+        if (count == 5){
+            image.removeChild(imgold);
+        } 
         img.onerror = function() {
             // any logic in case of error
             alert("Please type something else");
@@ -116,8 +130,8 @@ function Print(){
             document.body.appendChild(img);
             img.style.height= (Math.random()*250) + 100 +"px";
             img.style.width= img.style.height;
-            img.style.top = Math.ceil(Math.random() * (window.innerHeight-img.height)) + "px";
-            img.style.left = Math.ceil(Math.random() * (window.innerWidth-img.width)) +"px";
+            img.style.top = Math.ceil(Math.random() * (window.innerHeight-img.height-10)) + "px";
+            img.style.left = Math.ceil(Math.random() * (window.innerWidth-img.width-10)) +"px";
             imgold=img; 
         }
         load = false;
@@ -143,7 +157,7 @@ function Print(){
         }
         img.onload = function() {
             image.appendChild(img);
-            img.height=400;
+            img.height=350;
             imgold=img; 
         }
         load = false;
@@ -203,13 +217,14 @@ function Alter(element){
     div.style.left = Math.ceil(Math.random() * (window.innerWidth-375)) + "px";
 }
 
+let clock = 1;
 //create canvas
 function CreateCanvas(){
     //create canvas
     let canvas = document.createElement('canvas');
     canvas.id = "CursorLayer";
      //random canvas size
-    canvas.height = Math.round(Math.random()*300 + 100);
+    canvas.height = Math.round(Math.random()*200 + 100);
     canvas.width = canvas.height;
 
     canvas.style.zIndex = 2;
@@ -218,15 +233,25 @@ function CreateCanvas(){
     canvas.style.left = Math.random()*(window.innerWidth - canvas.width) +"px";
     var body = document.getElementsByTagName("body")[0];
     body.appendChild(canvas);
-
     //ctx
     let ctx = canvas.getContext("2d");
+
+    const gradient1 = ctx.createLinearGradient(0,0,0, canvas.height);
+    gradient1.addColorStop(0.2, 'red');
+    gradient1.addColorStop(0.3, 'orange');
+    gradient1.addColorStop(0.4, 'yellow');
+    gradient1.addColorStop(0.5, 'green');
+    gradient1.addColorStop(0.6, 'blue');
+    gradient1.addColorStop(0.7, 'purple');
+    gradient1.addColorStop(0.8, 'violet');
+
+    const letters = ['0', '1', 'E', 'R', 'O'];
 
     const myImage = new Image();
     for (i=0; i<Cells.length; i++){
             var o = Math.floor(Math.random()*Cells.length);
             var y = Math.floor(Math.random()*Cells[o].amount)+1;
-            console.log(Cells[o].amount)
+            //console.log(Cells[o].amount)
         if(Cells[o].amount!=0){
             myImage.src = "./image/"+Cells[o].noun+y+".jpg";
             break
@@ -236,8 +261,7 @@ function CreateCanvas(){
     } 
 
     //GENERATE RDM to choose canvas drawing//
-    let rdm = Math.random() * 10;
-
+    let rdm = (Math.random() * 5);
 
     // Setting up a function with the code to run after the image is loaded
     myImage.onload = () => {
@@ -262,7 +286,7 @@ function CreateCanvas(){
         ctx.clearRect(0,0,canvas.width, canvas.height);
 
         let particlesArray = [];
-        const numberOfParticles = Math.round(canvas.height/100) * 375;
+        const numberOfParticles = Math.round(canvas.height/100) * 150;
 
         let mappedImage = [];
 
@@ -302,6 +326,8 @@ function CreateCanvas(){
                 this.position1 = Math.floor(this.y);
                 this.position2 = Math.floor(this.x);
                 this.angle=0;
+                this.letter=letters[Math.floor(Math.random()*letters.length)];
+                this.random = Math.random();
             }
             //Update particle method for motion and color
             update(){
@@ -312,15 +338,28 @@ function CreateCanvas(){
                 }
                 let movement = (2.5 - this.speed) + this.velocity;
                 this.angle += this.speed/20;
-                this.size=this.speed * 3.5;
+                this.size=this.speed * 2.5;
 
                 //RDM MOVEMENT STATEMENTS
-                if (rdm > 8){
+                if (rdm > 3){
                     this.y += movement;
                     this.x +=movement;
                 }
-                else if (rdm > 6){
+                else if (rdm > 2){
                     this.y += movement;
+                }
+                else if (rdm > 1.5){
+                    this.y +=movement + Math.sin(this.angle)*2;
+                    this.x +=movement + Math.cos(this.angle)*2;
+                    this.size=this.speed;
+                }
+                else if (rdm > .5){
+                    this.x += movement;
+                    this.size=this.speed * 2.5;
+                }
+                else if (rdm >= 0){
+                    this.x += movement + Math.cos(this.angle) * 2;
+                    this.y += movement + Math.sin(this.angle) * 2;
                 }
 
                 //RESET MOVEMENT WHEN OUT OF FRAME
@@ -336,20 +375,35 @@ function CreateCanvas(){
             draw(){
                 ctx.beginPath();
 
+                if ((mappedImage[this.position1])&&(mappedImage[this.position1][this.position2])){
+                    ctx.fillStyle = mappedImage[this.position1][this.position2][1];
+                    ctx.strokeStyle = mappedImage[this.position1][this.position2][1];
+                }
                 //color assignments
-                if (rdm > 8){
-                    if ((mappedImage[this.position1])&&(mappedImage[this.position1][this.position2])){
-                        ctx.strokeStyle = mappedImage[this.position1][this.position2][1];
-                    }
+                if (rdm > 3){
+                    ctx.strokeRect(this.x, this.y, this.size, this.size);
                 }
 
-                else if (rdm > 6){
-                    if ((mappedImage[this.position1])&&(mappedImage[this.position1][this.position2])){
-                        ctx.strokeStyle = "green";
+                else if (rdm > 2){
+                    ctx.strokeStyle = "green";
+                    ctx.strokeRect(this.x, this.y, this.size, this.size);
+                }
+                else if (rdm > 1.5){
+                    ctx.fillStyle = gradient1;
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                }
+                else if (rdm > .5){
+                    if (this.random < .7){
+                        ctx.font = ((Math.round(canvas.height/100) * 5)+'px Mono-Regular')
+                        ctx.fillText(this.letter, this.x, this.y);
+                    }
+                    else{
+                        ctx.strokeRect(this.x, this.y, this.size, this.size);
                     }
                 }
-
-                ctx.strokeRect(this.x, this.y, this.size, this.size);
+                else if (rdm >= 0){
+                    ctx.fillRect(this.x, this.y, this.size, this.size);
+                }
                 ctx.fill();
             }
         }
@@ -363,11 +417,20 @@ function CreateCanvas(){
         function animate(){
             ctx.globalAlpha = 0.05;
             //background alpha color, every frame draws over, clear out canvas
-            if (rdm > 8){
-                ctx.fillStyle = 'rgba(0,50,0,.5)';
+            if (rdm > 3){
+                ctx.fillStyle = 'rgba('+ (Math.random()*255)+','+ (Math.random()*255)+','+ (Math.random()*255)+',.5)';
             }
-
-            else if (rdm > 6){
+            else if (rdm > 2){
+                ctx.fillStyle = 'rgba('+ (Math.random()*255)+','+ (Math.random()*255)+','+ (Math.random()*255)+',.5)';
+            }
+            else if (rdm > 1.5){
+                ctx.fillStyle = 'rgba(0,0,0,.5)';
+            }
+            else if (rdm > .5){
+                ctx.fillStyle = 'rgba(0,0,0,.5)';
+                ctx.globalAlpha = 1;
+            }
+            else if (rdm >= 0){
                 ctx.fillStyle = 'rgba(0,0,0,.5)';
             }
             ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -381,3 +444,34 @@ function CreateCanvas(){
         animate();
     };
 }
+
+function Pixel(){
+    //create canvas
+    let canvas = document.createElement('canvas');
+    canvas.id = "CursorLayer";
+     //random canvas size
+    canvas.height = Math.round((Math.random()*50) + 50);
+    canvas.width = canvas.height * (Math.random()*2)+1;
+
+    canvas.style.zIndex = 3;
+    canvas.style.position = "absolute";
+    canvas.style.top = Math.random()*(window.innerHeight -canvas.height) +"px";
+    canvas.style.left = Math.random()*(window.innerWidth -canvas.width) +"px";
+    var body = document.getElementsByTagName("body")[0];
+    body.appendChild(canvas);
+    //ctx
+    let ctx = canvas.getContext("2d");
+
+    function draw(){
+        for(x = 0; x < canvas.width; x+=10){
+            for (y = 0; y < canvas.height; y+=10){
+                ctx.fillStyle = "rgb"+getRandomColor();
+                ctx.fillRect(x,y,20,20);
+                ctx.fill();
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
