@@ -15,6 +15,7 @@ const Cells = [];
 
 //onload function
 window.onload = function() {
+    alert("WARNING: This site may potentially trigger seizures for people with photosensitive epilepsy. Viewer discretion is advised.")
     fetch('./index.txt')
     .then(response => response.text())
     .then(textString => {
